@@ -1,8 +1,8 @@
 #!/bin/bash
 #Current dir variable
 	curdir=$(dirname $(readlink -e "$0"))
-	newdir = /home/dcadmin/wallpaper
-	#su = echo 1 | sudo -S -u dcadmin
+	newdir=/home/dcadmin/wallpaper
+	#su=echo 1 | sudo -S -u dcadmin
 	#
 	#cd $curdir
 	#echo $pic
