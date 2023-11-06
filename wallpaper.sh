@@ -8,15 +8,15 @@
 	#echo $pic
 
 #Change wallpaper
-	mkdir /home/dcadmin/wallpaper
-	mv $dir/wall /home/dcadmin/wallpaper/wall
-	gsettings set org.gnome.desktop.background picture-uri "file:///home/dcadmin/wallpaper/wall"
+	mkdir $dir
+	mv $curdir/wall $dir/wall
+	gsettings set org.gnome.desktop.background picture-uri "file://\$dir/wall"
 
 #Change background
 	cd $curdir
 	wget -q https://raw.githubusercontent.com/PRATAP-KUMAR/ubuntu-gdm-set-background/main/ubuntu-gdm-set-background && chmod +x ubuntu-gdm-set-background
 	sudo apt-get install libglib2.0-dev-bin -y
-	sudo $curdir/ubuntu-gdm-set-background --image /home/dcadmin/wallpaper/wall
+	sudo $curdir/ubuntu-gdm-set-background --image $dir/wall
 
 #
 #reboot -i
