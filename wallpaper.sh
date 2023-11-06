@@ -2,7 +2,7 @@
 #Current dir variable
 	curdir=$(dirname $(readlink -e "$0"))
 	newdir=/home/dcadmin/wallpaper
-	$su=echo 1 | sudo -S -u dcadmin
+	su="echo 1 | sudo -S -u root"
 	#
 	#cd $curdir
 	#echo $pic
@@ -16,8 +16,7 @@
 	cd $curdir
 	echo 1 | sudo -S -u root apt-get install libglib2.0-dev-bin -y
 	wget -q https://raw.githubusercontent.com/PRATAP-KUMAR/ubuntu-gdm-set-background/main/ubuntu-gdm-set-background && chmod +x ubuntu-gdm-set-background
-	$curdir/ubuntu-gdm-set-background --image $newdir/wall
+	$su $curdir/ubuntu-gdm-set-background --image $newdir/wall
 
 #
 #reboot -i
-
