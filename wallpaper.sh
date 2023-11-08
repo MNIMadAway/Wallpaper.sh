@@ -5,12 +5,14 @@
 	CRED=$(echo $PSTR | openssl enc -aes-256-cbc -md sha512 -a -d -pbkdf2 -iter 100000 -pass pass:$SALT)
 	curdir=$(dirname $(readlink -e "$0"))
 	newdir=/home/dcuser/wallpaper
+	#echo $CRED | su - dcadmin -c ""
 	#
 	#cd $curdir
 	#echo $pic
 
 #Change backpaper
 	mkdir $newdir
+	chmod +rw $curdir/wall
 	mv $curdir/wall $newdir/wall
 	gsettings set org.gnome.desktop.background picture-uri "file://$newdir/wall"
 
