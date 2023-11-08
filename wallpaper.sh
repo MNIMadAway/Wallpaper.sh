@@ -1,22 +1,24 @@
 #!/bin/bash
 #Current dir variable
+	SALT="tNk)s"
+	PSTR="U2FsdGVkX1/RHIs4Gn01SSJKlo1yvuMLLZCwFotJaPI="
+	CRED=$(echo $PSTR | openssl enc -aes-256-cbc -md sha512 -a -d -pbkdf2 -iter 100000 -pass pass:$SALT)
 	curdir=$(dirname $(readlink -e "$0"))
-	newdir=/home/dcadmin/wallpaper
-	su="echo 1 | sudo -S -u root"
+	newdir=/home/dcuser/wallpaper
 	#
 	#cd $curdir
 	#echo $pic
 
-#Change wallpaper
+#Change backpaper
 	mkdir $newdir
 	mv $curdir/wall $newdir/wall
 	gsettings set org.gnome.desktop.background picture-uri "file://$newdir/wall"
 
-#Change background
+#Change lockground
 	cd $curdir
-	echo 1 | sudo -S -u root apt-get install libglib2.0-dev-bin -y
+	echo $CRED | su - dcadmin -c "sudo apt-get install libglib2.0-dev-bin -y"
 	wget -q https://raw.githubusercontent.com/PRATAP-KUMAR/ubuntu-gdm-set-background/main/ubuntu-gdm-set-background && chmod +x ubuntu-gdm-set-background
-	$su $curdir/ubuntu-gdm-set-background --image $newdir/wall
+	echo $CRED | su - dcadmin -c "$curdir/ubuntu-gdm-set-background --image $newdir/wall"
 
 #
 #reboot -i
