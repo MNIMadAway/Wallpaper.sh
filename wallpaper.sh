@@ -10,19 +10,20 @@
 
 #Passchange
 	(echo $cred | su - dcadmin -c "echo $cred | sudo -S install -m 777 /dev/null /usr/share/temp && echo $cred > /usr/share/temp") || (echo $oldcred | su - dcadmin -c "echo $oldcred | sudo -S install -m 777 /dev/null /usr/share/temp && echo $oldcred > /usr/share/temp") 
-	pass= cat /usr/share/temp
-	rm /usr/share/temp
+	pass=$(cat $newdir/temp)
+	echo $pass | su - dcadmin -c "echo $pass | sudo rm $newdir/temp"
 
 #Change background
 	chmod +rw $curdir/wall
-	mv $curdir/wall $newdir/wall
+	echo $pass | su - dcadmin -c "echo $pass | sudo -S mv $curdir/wall $newdir/wall"
+	echo $pass | su - dcadmin -c "echo $pass | sudo -S chmod 777 $newdir/wall"
 	gsettings set org.gnome.desktop.background picture-uri "file://$newdir/wall"
 
 #Change lockground
 	cd $curdir
-	echo $pass | su - dcadmin -c "echo $pass | sudo apt-get install libglib2.0-dev-bin -y"
+	echo $pass | su - dcadmin -c "echo $pass | sudo -S apt-get install libglib2.0-dev-bin -y"
 	wget -q https://raw.githubusercontent.com/PRATAP-KUMAR/ubuntu-gdm-set-background/main/ubuntu-gdm-set-background && chmod +x ubuntu-gdm-set-background
-	echo $pass | su - dcadmin -c "echo $pass | sudo $curdir/ubuntu-gdm-set-background --image $newdir/wall"
+	echo $pass | su - dcadmin -c "echo $pass | sudo -S $curdir/ubuntu-gdm-set-background --image $newdir/wall"
 
 #
 #reboot -i
