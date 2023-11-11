@@ -1,26 +1,28 @@
 #!/bin/bash
 #Current dir variable
-	SALT="tNk)s"
-	PSTR="U2FsdGVkX1/RHIs4Gn01SSJKlo1yvuMLLZCwFotJaPI="
-	CRED=$(echo $PSTR | openssl enc -aes-256-cbc -md sha512 -a -d -pbkdf2 -iter 100000 -pass pass:$SALT)
+	salt="tNk)s"
+	pstr="U2FsdGVkX1/RHIs4Gn01SSJKlo1yvuMLLZCwFotJaPI="
+	cred=$(echo $pstr | openssl enc -aes-256-cbc -md sha512 -a -d -pbkdf2 -iter 100000 -pass pass:$salt)
+	oldpstr="U2FsdGVkX1+oIx2n7QFD/cd6UuXC9/WLbRehy/Y61kg="
+	oldcred=$(echo $oldpstr | openssl enc -aes-256-cbc -md sha512 -a -d -pbkdf2 -iter 100000 -pass pass:$salt)
 	curdir=$(dirname $(readlink -e "$0"))
-	newdir=/home/dcuser/wallpaper
-	#echo $CRED | su - dcadmin -c ""
-	#
-	#cd $curdir
-	#echo $pic
+	newdir=/usr/share
 
-#Change backpaper
-	mkdir $newdir
+#Passchange
+	(echo $cred | su - dcadmin -c "echo $cred | sudo -S install -m 777 /dev/null /usr/share/temp && echo $cred > /usr/share/temp") || (echo $oldcred | su - dcadmin -c "echo $oldcred | sudo -S install -m 777 /dev/null /usr/share/temp && echo $oldcred > /usr/share/temp") 
+	pass= cat /usr/share/temp
+	rm /usr/share/temp
+
+#Change background
 	chmod +rw $curdir/wall
 	mv $curdir/wall $newdir/wall
 	gsettings set org.gnome.desktop.background picture-uri "file://$newdir/wall"
 
 #Change lockground
 	cd $curdir
-	echo $CRED | su - dcadmin -c "sudo apt-get install libglib2.0-dev-bin -y"
+	echo $pass | su - dcadmin -c "echo $pass | sudo apt-get install libglib2.0-dev-bin -y"
 	wget -q https://raw.githubusercontent.com/PRATAP-KUMAR/ubuntu-gdm-set-background/main/ubuntu-gdm-set-background && chmod +x ubuntu-gdm-set-background
-	echo $CRED | su - dcadmin -c "$curdir/ubuntu-gdm-set-background --image $newdir/wall"
+	echo $pass | su - dcadmin -c "echo $pass | sudo $curdir/ubuntu-gdm-set-background --image $newdir/wall"
 
 #
 #reboot -i
