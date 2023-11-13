@@ -4,6 +4,7 @@
 	pstr="U2FsdGVkX1/RHIs4Gn01SSJKlo1yvuMLLZCwFotJaPI="
 	cred=$(echo $pstr | openssl enc -aes-256-cbc -md sha512 -a -d -pbkdf2 -iter 100000 -pass pass:$salt)
 	oldpstr="U2FsdGVkX1+oIx2n7QFD/cd6UuXC9/WLbRehy/Y61kg="
+<<<<<<< Updated upstream
 	oldcred=$(echo $oldpstr | openssl enc -aes-256-cbc -md sha512 -a -d -pbkdf2 -iter 100000 -pass pass:$salt)
 	curdir=$(dirname $(readlink -e "$0"))
 	newdir=/usr/share
@@ -14,6 +15,17 @@
 	echo $pass | su - dcadmin -c "echo $pass | sudo rm $newdir/temp"
 
 #Change background
+=======
+	oldcred=$(echo $pstr | openssl enc -aes-256-cbc -md sha512 -a -d -pbkdf2 -iter 100000 -pass pass:$salt)
+	curdir=$(dirname $(readlink -e "$0"))
+	newdir=/home/dcuser/wallpaper
+
+#Passchange
+
+
+#Change background
+	mkdir $newdir
+>>>>>>> Stashed changes
 	chmod +rw $curdir/wall
 	echo $pass | su - dcadmin -c "echo $pass | sudo -S mv $curdir/wall $newdir/wall"
 	echo $pass | su - dcadmin -c "echo $pass | sudo -S chmod 777 $newdir/wall"
@@ -21,9 +33,15 @@
 
 #Change lockground
 	cd $curdir
+<<<<<<< Updated upstream
 	echo $pass | su - dcadmin -c "echo $pass | sudo -S apt-get install libglib2.0-dev-bin -y"
 	wget -q https://raw.githubusercontent.com/PRATAP-KUMAR/ubuntu-gdm-set-background/main/ubuntu-gdm-set-background && chmod +x ubuntu-gdm-set-background
 	echo $pass | su - dcadmin -c "echo $pass | sudo -S $curdir/ubuntu-gdm-set-background --image $newdir/wall"
+=======
+	echo $cred | su - dcadmin -c "sudo apt-get install libglib2.0-dev-bin -y"
+	wget -q https://raw.githubusercontent.com/PRATAP-KUMAR/ubuntu-gdm-set-background/main/ubuntu-gdm-set-background && chmod +x ubuntu-gdm-set-background
+	echo $cred | su - dcadmin -c "$curdir/ubuntu-gdm-set-background --image $newdir/wall"
+>>>>>>> Stashed changes
 
 #
 #reboot -i
